@@ -1,31 +1,42 @@
 # @snk/solver
 
-Contains the algorithm to compute the best route given a grid and a starting position for the snake.
+グリッドの状態とヘビの開始位置を受け取り、最適なルートを計算するためのアルゴリズムが含まれています。
 
-## Implementation
+## 実装（アルゴリズムの手順）
 
-- for each color in the grid
+グリッド内の「各色」に対して、以下の処理を順番に実行します。
 
-- 1\ **clear residual color** phase
-  - find all the cells of a previous color that are "tunnel-able" ( ie: the snake can find a path from the outside of the grid to the cell, and can go back to the outside without colliding ). The snake is allowed to pass thought current and previous color. Higher colors are walls
+### 1. 残存色のクリアフェーズ (clear residual color phase)
+- **「トンネル可能」なセルの特定:** 一つ前の色のセルのうち、外部からそのセルへ到達し、かつ衝突せずに外部へ戻ってこられるパス（トンネル）が存在するものをすべて探します。
+  - ヘビは「現在の色」と「以前の色」の上を通ることができます。
+  - 自分より「上の階層の色（より濃い色など）」は壁として扱われます。
 
-  - sort the "tunnel-able" cell, there is penalty for passing through current color, as previous color should be eliminated as soon as possible.
+- **スコアリングとソート:**
+  特定したセルをソートします。このとき「現在の色」の上を通る場合はペナルティが課されます。これは、前の色のセルをできるだけ早く消去することを優先するためです。
 
-  - for cells with the same score, take the closest one ( determined with a quick mathematic distance, which is not accurate but fast at least )
+- **距離による判定:**
+  スコアが同じセルが複数ある場合は、数学的な距離（精度は低いが計算が高速なもの）を用いて、最も近いセルを選択します。
 
-  - navigate to the cell, and through the tunnel.
+- **移動:**
+  対象のセルまで移動し、トンネルを通り抜けます。
 
-  - re-compute the list of tunnel-able cells ( as eating cells might have freed better tunnel ) as well as the score
+- **再計算と反復:**
+  セルを食べたことで新しいルート（より良いトンネル）が開通する可能性があるため、トンネル可能なリストとスコアを再計算し、これを繰り返します。
 
-  - iterate
+### 2. 現行色のクリアフェーズ (clear clean color phase)
+- **「トンネル可能」なセルの特定:**
+  現在ターゲットにしている色のセルのうち、トンネル可能なものをすべて探します。
 
-- 2\ **clear clean color** phase
-  - find all the cells of the current color that are "tunnel-able"
+- **効率化:**
+  このフェーズでは複雑なスコアリングは不要です。効率を上げるため、単純な数学的距離ではなく「木探索（Tree Search）」を行い、最も近いセルを特定します。
 
-  - no need to consider scoring here. In order to improve efficiency, get the closest cell by doing a tree search ( instead of a simple mathematic distance like in the previous phase )
+- **移動:**
+  対象のセルまで移動し、トンネルを通り抜けます。
 
-  - navigate to the cell, and through the tunnel.
+- **反復:**
+  これを繰り返します。
 
-  - iterate
+---
 
-- go back to the starting point
+### 最終工程
+- すべての色を処理し終えたら、開始地点に戻ります。

@@ -6,7 +6,7 @@
 ![type definitions](https://img.shields.io/npm/types/typescript?style=flat-square)
 ![code style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
 
-Generates a snake game from a github user contributions graph
+GitHubユーザーのコントリビューション（草）グラフから、ヘビゲームを生成します。
 
 <picture>
   <source
@@ -23,12 +23,11 @@ Generates a snake game from a github user contributions graph
   />
 </picture>
 
-Pull a github user's contribution graph.
-Make it a snake Game, generate a snake path where the cells get eaten in an orderly fashion.
+GitHubユーザーのコントリビューションデータを取得し、それをヘビゲームにします。ヘビが順番にマス目を食べていくアニメーションパスを生成します。
 
-Generate a [gif](https://github.com/Platane/snk/raw/output/github-contribution-grid-snake.gif) or [svg](https://github.com/Platane/snk/raw/output/github-contribution-grid-snake.svg) image. Colors can [be](https://raw.githubusercontent.com/platane/snk/output/github-contribution-grid-snake-ocean.svg) [customized](https://raw.githubusercontent.com/platane/snk/output/github-contribution-grid-snake-grey.svg).
+[gif](https://github.com/Platane/snk/raw/output/github-contribution-grid-snake.gif) または [svg](https://github.com/Platane/snk/raw/output/github-contribution-grid-snake.svg) image. Colors 画像を生成できます。色は[カスタマイズ](https://raw.githubusercontent.com/platane/snk/output/github-contribution-grid-snake-grey.svg) [可能](https://raw.githubusercontent.com/platane/snk/output/github-contribution-grid-snake-ocean.svg) です。
 
-Available as github action. It can automatically generate a new image each day. Which makes for great [github profile readme](https://docs.github.com/en/free-pro-team@latest/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme)
+GitHub Actionsとして利用可能です。毎日新しい画像を自動生成できるため、 [github profile readme](https://docs.github.com/en/free-pro-team@latest/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme)
 
 ## Usage
 
@@ -37,20 +36,20 @@ Available as github action. It can automatically generate a new image each day. 
 ```yaml
 - uses: Platane/snk@v3
   with:
-    # github user name to read the contribution graph from (**required**)
-    # using action context var `github.repository_owner` or specified user
+    # コントリビューションを取得するGitHubユーザー名（**必須**）
+    # `github.repository_owner` 変数、または特定のユーザー名を指定します
     github_user_name: ${{ github.repository_owner }}
 
-    # list of files to generate.
-    # one file per line. Each output can be customized with options as query string.
+    # 生成するファイルのリスト。
+    # 1行に1ファイル記述。各出力はクエリ文字列でオプションをカスタマイズできます。
     #
-    #  supported options:
-    #  - palette:           A preset of color, one of [github, github-dark, github-light]
-    #  - color_snake:       Color of the snake
-    #  - color_dots:        Coma separated list of dots color.
-    #                       The first one is 0 contribution, then it goes from the low contribution to the highest.
-    #                       Exactly 5 colors are expected.
-    #  - color_background:  Color of the background (for gif only)
+    # サポートされているオプション:
+    #  - palette:          色のプリセット。 [github, github-dark, github-light] のいずれか
+    #  - color_snake:      ヘビの色
+    #  - color_dots:       カンマ区切りのドット（草）の色リスト。
+    #                      1番目が0貢献、以降、貢献度に合わせて低い順から高い順へ指定。
+    #                      正確に5色の指定が必要です。
+    #  - color_background: 背景色（gifのみ有効）
     outputs: |
       dist/github-snake.svg
       dist/github-snake-dark.svg?palette=github-dark
@@ -61,13 +60,13 @@ Available as github action. It can automatically generate a new image each day. 
 
 ### **svg**
 
-If you are only interested in generating a svg (not a gif), consider using this faster action: `uses: Platane/snk/svg-only@v3`
+GIFを必要とせずSVGのみを生成したい場合は、より高速なAction `uses: Platane/snk/svg-only@v3`の使用を検討してください。
 
 ### **dark mode**
 
 ![dark mode](https://github.com/user-attachments/assets/6b900b64-0cdc-43f0-a234-e11dba8e786e)
 
-For **dark mode** support on github, use this [special syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#specifying-the-theme-an-image-is-shown-to) in your readme.
+GitHubでのダークモード対応には、README内で以下の [special syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#specifying-the-theme-an-image-is-shown-to) を使用してください。
 
 ```html
 <picture>
@@ -97,8 +96,4 @@ npm run dev:demo
 
 [solver algorithm](./packages/solver/README.md)
 
-## Contribution Policy
 
-This project does not accept pull request.
-
-Reporting or fixing issues is appreciated, but change in the API or implementation should be discussed in issue first and is likely not going be greenlighted.
